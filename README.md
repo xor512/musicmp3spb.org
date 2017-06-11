@@ -57,3 +57,7 @@ You need Python2 (since mechanize is not available for Pyton3) and [mechanize](h
 ## License
 
 [WTFPL – Do What the Fuck You Want to Public License](http://www.wtfpl.net/)
+
+## Ports
+
+There is a [Python 3 port](https://github.com/damsgithub/musicmp3spb-3.py) of this script using [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/) instead of [Mechanize](https://pypi.python.org/pypi/mechanize/).
