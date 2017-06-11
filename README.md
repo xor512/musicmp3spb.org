@@ -52,7 +52,7 @@ $ musicmp3spb.py -a http://musicmp3spb.org/artist/textures.html
 
 ## Requirements
 
-You need Python2 (since mechanize is not available for Pyton3) and [mechanize](https://pypi.python.org/pypi/mechanize/).
+You need Python2 (since mechanize is not available for Python3) and [mechanize](https://pypi.python.org/pypi/mechanize/).
 
 ## License
 
