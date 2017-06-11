@@ -82,15 +82,15 @@ def browser_open(url):
     browser.open(url)
     return browser
 
-def to_absolute_url(url, browser):
-    if not url.startswith('http://') and not url.startswith('https://'):
-        hostname = urlparse(browser.geturl()).hostname
-        return 'http://' + hostname + url
-    return url
-
 def prepend_http(url):
     if not url.startswith('http://') and not url.startswith('https://'):
         return 'http://' + url
+    return url
+
+def to_absolute_url(url, browser):
+    if not url.startswith('http://') and not url.startswith('https://'):
+        hostname = urlparse(browser.geturl()).hostname
+        return prepend_http(hostname + url)
     return url
 
 def mkdir_and_chdir(new_dir):
@@ -105,7 +105,7 @@ def download_song(url, filename_ref):
 
     filename = url + '.mp3'
     for link in browser.links(url_regex=action_regex):
-        filename = link.text
+        filename = to_utf8(link.text)
         break
 
     filename_ref['val'] = filename
@@ -122,7 +122,7 @@ def download_song(url, filename_ref):
     for link in browser.links(url_regex='tempfile\.ru'):
         global song_found
         song_found = True
-        download_file(to_utf8(link.url), filename)
+        download_file(to_absolute_url(to_utf8(link.url), browser), filename)
         break
 
 def download_album(url):
@@ -132,7 +132,7 @@ def download_album(url):
 
     for link in browser.links(url_regex='/download/.*'):
         for attr in link.attrs:
-            if len(attr) == 2 and attr[0] == 'title':
+            if len(attr) == 2 and to_utf8(attr[0]) == 'title':
                 # title looks like: Скачать mp3 Arms Of The Sea,
                 # links with other titles can be something like /download/play...
                 # and this is not what we want to download
@@ -156,9 +156,8 @@ def download_album(url):
                             filename = filename_ref['val']
                             if filename and os.path.exists(filename):
                                 os.remove(filename)
-                            # Rethrow exception to the upper level to stop
-                            # downloading everything in case we cannot download
-                            # one song 5 times
+                            # Rethrow exception to the upper level so it can cleanup
+                            # album directory i case we cannot download one song 5 times
                             if attempts == 0:
                                 raise e
 
