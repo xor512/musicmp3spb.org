@@ -44,7 +44,7 @@ def to_utf8(s):
         of python-mechanize for Python 2.7 behave differently: older versions
         return str objects in CP1251 charset and newer ones detect encoding
         automatically and return unicode objects - convert them all to UTS-8
-        to enable string comparisons with UTF-8 literals in thus source file
+        to enable string comparisons with UTF-8 literals in this source file
     """
     if isinstance(s, unicode):
         return s.encode('utf8')
