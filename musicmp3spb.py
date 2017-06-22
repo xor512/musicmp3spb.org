@@ -239,7 +239,6 @@ def main():
         try:
             download_album(url)
         except UnicodeDecodeError as e:
-            print_error(e)
             was_error = True
             print_error("\nDue to bug in httplib (http://bugs.python.org/issue11898)"
                         "and mechanize not being available for Python3 this album cannot"
