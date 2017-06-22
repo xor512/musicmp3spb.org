@@ -186,11 +186,10 @@ def download_band(url):
                 os.chdir('..')
                 break
             except UnicodeDecodeError:
-                print_error("""\nDue to bug in httplib (http://bugs.python.org/issue11898)
-and mechanize not being available for Python3 this album cannot
-be downloaded automatically. You have to download this album
-by other means. (See list of such album links in the end).
-""")
+                print_error("\nDue to bug in httplib (http://bugs.python.org/issue11898)"
+                            "and mechanize not being available for Python3 this album cannot"
+                            "be downloaded automatically. You have to download this album"
+                            "by other means. (See list of such album links in the end).")
                 failed_album_urls.append(album_url)
                 os.chdir('..')
                 shutil.rmtree(album_dir, ignore_errors=True)
@@ -207,21 +206,6 @@ by other means. (See list of such album links in the end).
         print_error('\nFailed to download the following albums:')
         for album_url in failed_album_urls:
             print_error('\t' + album_url)
-
-def help():
-    print """Python script to automatically download albums from http://musicmp3spb.org site.
-
-Usage:
-
-$ musicmp3spb.py http://musicmp3spb.org/album/dualism.html
-to download all songs from the album's page
-
-or
-$ musicmp3spb.py -a[--all] http://musicmp3spb.org/artist/textures.html
-to download all albums from the band's page.
-
-You need Python2 (since mechanize is not available for Pyton3)
-and mechanize (https://pypi.python.org/pypi/mechanize)."""
 
 def main():
     if len(sys.argv) < 2 or \
@@ -243,11 +227,10 @@ def main():
             download_band(url)
         except UnicodeDecodeError:
             was_error = True
-            print_error("""\nDue to bug in httplib (http://bugs.python.org/issue11898)
-and mechanize not being available for Python3 these albums cannot
-be downloaded automatically. You have to download these albums
-by other means.
-""")
+            print_error("\nDue to bug in httplib (http://bugs.python.org/issue11898)"
+                        "and mechanize not being available for Python3 these albums cannot"
+                        "be downloaded automatically. You have to download these albums"
+                        "by other means.")
         except Exception as e:
             was_error = True
             print_error('Error: Cannot download band albums: %s\n\t%s!' % (url, e))
@@ -255,19 +238,34 @@ by other means.
         url = prepend_http(sys.argv[1])
         try:
             download_album(url)
-        except UnicodeDecodeError:
+        except UnicodeDecodeError as e:
+            print_error(e)
             was_error = True
-            print_error("""\nDue to bug in httplib (http://bugs.python.org/issue11898)
-and mechanize not being available for Python3 this album cannot
-be downloaded automatically. You have to download this album
-by other means.
-""")
+            print_error("\nDue to bug in httplib (http://bugs.python.org/issue11898)"
+                        "and mechanize not being available for Python3 this album cannot"
+                        "be downloaded automatically. You have to download this album"
+                        "by other means.")
         except Exception as e:
             was_error = True
             print_error('Error: Cannot download album: %s\n\t%s!' % (url, e))
 
         if not was_error and not song_found:
             print_error("Found nothing to download!")
+
+def help():
+    print """Python script to automatically download albums from http://musicmp3spb.org site.
+
+Usage:
+
+$ musicmp3spb.py http://musicmp3spb.org/album/dualism.html
+to download all songs from the album's page
+
+or
+$ musicmp3spb.py -a[--all] http://musicmp3spb.org/artist/textures.html
+to download all albums from the band's page.
+
+You need Python2 (since mechanize is not available for Pyton3)
+and mechanize (https://pypi.python.org/pypi/mechanize)."""
 
 if __name__ == '__main__':
     main()
