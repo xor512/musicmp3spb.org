@@ -79,6 +79,7 @@ def download_file(url, filename):
 def browser_open(url):
     browser = mechanize.Browser()
     browser.set_handle_robots(False)
+    browser.set_handle_equiv(False)
     browser.open(url)
     return browser
 
