@@ -186,15 +186,6 @@ def download_band(url):
                 download_album(album_url)
                 os.chdir('..')
                 break
-            except UnicodeDecodeError:
-                print_error("\nDue to bug in httplib (http://bugs.python.org/issue11898)"
-                            "and mechanize not being available for Python3 this album cannot"
-                            "be downloaded automatically. You have to download this album"
-                            "by other means. (See list of such album links in the end).")
-                failed_album_urls.append(album_url)
-                os.chdir('..')
-                shutil.rmtree(album_dir, ignore_errors=True)
-                break
             except Exception as e:
                 attempts -= 1
                 print_error('\nFailure, attempts left: %d, album: %s\n\t%s!' % \
@@ -226,12 +217,6 @@ def main():
         url = prepend_http(sys.argv[2])
         try:
             download_band(url)
-        except UnicodeDecodeError:
-            was_error = True
-            print_error("\nDue to bug in httplib (http://bugs.python.org/issue11898)"
-                        "and mechanize not being available for Python3 these albums cannot"
-                        "be downloaded automatically. You have to download these albums"
-                        "by other means.")
         except Exception as e:
             was_error = True
             print_error('Error: Cannot download band albums: %s\n\t%s!' % (url, e))
@@ -239,12 +224,6 @@ def main():
         url = prepend_http(sys.argv[1])
         try:
             download_album(url)
-        except UnicodeDecodeError as e:
-            was_error = True
-            print_error("\nDue to bug in httplib (http://bugs.python.org/issue11898)"
-                        "and mechanize not being available for Python3 this album cannot"
-                        "be downloaded automatically. You have to download this album"
-                        "by other means.")
         except Exception as e:
             was_error = True
             print_error('Error: Cannot download album: %s\n\t%s!' % (url, e))
