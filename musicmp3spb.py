@@ -1,19 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-#            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-#                    Version 2, December 2004
-#
 # Copyright (C) 2017 Siergiej Riaguzow <xor256@gmx.com>
-#
-# Everyone is permitted to copy and distribute verbatim or modified
-# copies of this license document, and changing it is allowed as long
-# as the name is changed.
-#
-#            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-#   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-#
-#  0. You just DO WHAT THE FUCK YOU WANT TO.
+# This work is free. You can redistribute it and/or modify it under the
+# terms of the Do What The Fuck You Want To Public License, Version 2,
+# as published by Sam Hocevar.  See the COPYING file for more details.
 
 import mechanize
 import re
@@ -190,15 +181,10 @@ def download_band(url):
                 attempts -= 1
                 print_error('\nFailure, attempts left: %d, album: %s\n\t%s!' % \
                     (attempts, album_url, e))
-                failed_album_urls.append(album_url)
                 os.chdir('..')
                 shutil.rmtree(album_dir, ignore_errors=True)
-
-    if failed_album_urls:
-        print_error('\nFailed to download the following albums:')
-        for album_url in failed_album_urls:
-            print_error('\t' + album_url)
-
+                if attempts == 0:
+                    failed_album_urls.append(album_url)
 def main():
     if len(sys.argv) < 2 or \
        len(sys.argv) > 2 and \
@@ -230,6 +216,10 @@ def main():
 
         if not was_error and not song_found:
             print_error("Found nothing to download!")
+        else if failed_album_urls:
+            print_error('\nFailed to download the following albums:')
+            for album_url in failed_album_urls:
+                print_error('\t' + album_url)
 
 def help():
     print """Python script to automatically download albums from http://musicmp3spb.org site.
