@@ -170,7 +170,6 @@ def download_band(url):
         print '-------------------------------------------------------------------------------'
 
         attempts = MAX_DOWNLOAD_ATTEMPTS
-        global failed_album_urls
         while attempts > 0:
             mkdir_and_chdir(album_dir)
             try:
@@ -184,6 +183,7 @@ def download_band(url):
                 os.chdir('..')
                 shutil.rmtree(album_dir, ignore_errors=True)
                 if attempts == 0:
+                    global failed_album_urls
                     failed_album_urls.append(album_url)
 def main():
     if len(sys.argv) < 2 or \
