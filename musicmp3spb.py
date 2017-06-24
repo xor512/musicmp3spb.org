@@ -216,7 +216,7 @@ def main():
 
         if not was_error and not song_found:
             print_error("Found nothing to download!")
-        else if failed_album_urls:
+        elif failed_album_urls:
             print_error('\nFailed to download the following albums:')
             for album_url in failed_album_urls:
                 print_error('\t' + album_url)
