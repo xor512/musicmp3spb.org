@@ -42,6 +42,16 @@ def to_utf8(s):
     elif isinstance(s, str):
         return s.decode('cp1251').encode('utf8')
 
+def to_safe_path(a_path):
+    def fixup(c):
+        keepcharacters = (' ', ',', '.', '_', '-', '?', '!')
+        if c.isalnum() or c in keepcharacters:
+            return c
+        else:
+            return '_'
+    fix_path = "".join(fixup(c) for c in a_path).strip()
+    return fix_path
+
 def download_file(url, filename):
     u = urllib2.urlopen(url)
     f = open(filename, 'wb')
@@ -95,7 +105,7 @@ def download_song(url, filename_ref):
 
     action_regex = re.compile('/file/.*')
 
-    filename = url + '.mp3'
+    filename = to_safe_path(url + '.mp3')
     for link in browser.links(url_regex=action_regex):
         filename = to_utf8(link.text)
         break
@@ -136,11 +146,6 @@ def download_album(url):
                             song_url = to_absolute_url(to_utf8(link.url), browser)
                             download_song(song_url, filename_ref)
                             break
-                        except UnicodeDecodeError:
-                            filename = filename_ref['val']
-                            if filename and os.path.exists(filename):
-                                os.remove(filename)
-                            raise e
                         except Exception as e:
                             attempts -= 1
                             print_error('\nFailure, attempts left: %d, song: %s\n\t%s!' % \
@@ -162,7 +167,7 @@ def download_band(url):
         album_name = to_utf8(link.text)
         if not album_name: # Invisible, there will be another one with text
             continue
-        album_dir = './' + album_name
+        album_dir = '.' + os.sep + to_safe_path(album_name)
 
         print '-------------------------------------------------------------------------------'
         print '  Album "%s"' % album_name
