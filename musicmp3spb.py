@@ -44,7 +44,7 @@ def to_utf8(s):
 
 def to_safe_path(a_path):
     def fixup(c):
-        keepcharacters = (' ', ',', '.', '_', '-', '?', '!')
+        keepcharacters = (' ', ',', '.', '_', '-', '!')
         if c.isalnum() or c in keepcharacters:
             return c
         else:
