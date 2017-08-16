@@ -27,6 +27,11 @@ def print_error(msg):
         msg,
         color_clear_esc_seq)
 
+def print_usage():
+    script_name = os.path.basename(sys.argv[0])
+    print_error('Usage: %s <album_url> or %s -a[--all] <band_url>' % (script_name, script_name))
+    print_error('To print help: %s -h[--help]' % script_name)
+
 def to_MB(a_bytes):
     return a_bytes / 1024. / 1024.
 
@@ -42,7 +47,7 @@ def to_utf8(s):
     elif isinstance(s, str):
         return s.decode('cp1251').encode('utf8')
 
-def to_safe_path(a_path):
+def to_safe_filename(a_path):
     def fixup(c):
         keepcharacters = (' ', ',', '.', '_', '-', '!')
         if c.isalnum() or c in keepcharacters:
@@ -105,7 +110,7 @@ def download_song(url, filename_ref):
 
     action_regex = re.compile('/file/.*')
 
-    filename = to_safe_path(url + '.mp3')
+    filename = to_safe_filename(url + '.mp3')
     for link in browser.links(url_regex=action_regex):
         filename = to_utf8(link.text)
         break
@@ -167,7 +172,7 @@ def download_band(url):
         album_name = to_utf8(link.text)
         if not album_name: # Invisible, there will be another one with text
             continue
-        album_dir = '.' + os.sep + to_safe_path(album_name)
+        album_dir = '.' + os.sep + to_safe_filename(album_name)
 
         print '-------------------------------------------------------------------------------'
         print '  Album "%s"' % album_name
@@ -194,9 +199,7 @@ def main():
     if len(sys.argv) < 2 or \
        len(sys.argv) > 2 and \
        sys.argv[1] != '-a' and sys.argv[1] != '--all':
-        script_name = os.path.basename(sys.argv[0])
-        print_error('Usage: %s <album_url> or %s -a[--all] <band_url>' % (script_name, script_name))
-        print_error('To print help: %s -h[--help]' % script_name)
+        print_usage()
         sys.exit(1)
 
     arg = sys.argv[1]
@@ -219,12 +222,12 @@ def main():
             was_error = True
             print_error('Error: Cannot download album: %s\n\t%s!' % (url, e))
 
-        if not was_error and not song_found:
-            print_error("Found nothing to download!")
-        elif failed_album_urls:
-            print_error('\nFailed to download the following albums:')
-            for album_url in failed_album_urls:
-                print_error('\t' + album_url)
+    if not was_error and not song_found:
+        print_error("Found nothing to download!")
+    elif failed_album_urls:
+        print_error('\nFailed to download the following albums:')
+        for album_url in failed_album_urls:
+            print_error('\t' + album_url)
 
 def help():
     print """Python script to automatically download albums from http://musicmp3spb.org site.
