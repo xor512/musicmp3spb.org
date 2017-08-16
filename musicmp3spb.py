@@ -210,6 +210,7 @@ def download_band(url):
                 if attempts == 0:
                     global failed_album_urls
                     failed_album_urls.append(album_url)
+
 def main():
     if len(sys.argv) < 2 or \
        len(sys.argv) > 2 and \
