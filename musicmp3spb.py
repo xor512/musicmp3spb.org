@@ -19,6 +19,26 @@ MAX_DOWNLOAD_ATTEMPTS = 5
 failed_album_urls = []
 song_found = False
 
+def print_help():
+    print """Python script to automatically download albums from http://musicmp3spb.org site.
+
+Usage:
+
+$ musicmp3spb.py http://musicmp3spb.org/album/dualism.html
+to download all songs from the album's page
+
+or
+$ musicmp3spb.py -a[--all] http://musicmp3spb.org/artist/textures.html
+to download all albums from the band's page.
+
+You need Python2 (since mechanize is not available for Pyton3)
+and mechanize (https://pypi.python.org/pypi/mechanize)."""
+
+def print_usage():
+    script_name = os.path.basename(sys.argv[0])
+    print_error('Usage: %s <album_url> or %s -a[--all] <band_url>' % (script_name, script_name))
+    print_error('To print help: %s -h[--help]' % script_name)
+
 def print_error(msg):
     color_red_bold_esc_seq = "\033[1;31m"
     color_clear_esc_seq = "\033[0;39m"
@@ -26,11 +46,6 @@ def print_error(msg):
         color_red_bold_esc_seq,
         msg,
         color_clear_esc_seq)
-
-def print_usage():
-    script_name = os.path.basename(sys.argv[0])
-    print_error('Usage: %s <album_url> or %s -a[--all] <band_url>' % (script_name, script_name))
-    print_error('To print help: %s -h[--help]' % script_name)
 
 def to_MB(a_bytes):
     return a_bytes / 1024. / 1024.
@@ -206,7 +221,8 @@ def main():
     was_error = False
 
     if arg == '-h' or arg == '--help':
-        help()
+        print_help()
+        sys.exit(0)
     elif arg == '-a' or arg == '--all':
         url = prepend_http(sys.argv[2])
         try:
@@ -228,21 +244,6 @@ def main():
         print_error('\nFailed to download the following albums:')
         for album_url in failed_album_urls:
             print_error('\t' + album_url)
-
-def help():
-    print """Python script to automatically download albums from http://musicmp3spb.org site.
-
-Usage:
-
-$ musicmp3spb.py http://musicmp3spb.org/album/dualism.html
-to download all songs from the album's page
-
-or
-$ musicmp3spb.py -a[--all] http://musicmp3spb.org/artist/textures.html
-to download all albums from the band's page.
-
-You need Python2 (since mechanize is not available for Pyton3)
-and mechanize (https://pypi.python.org/pypi/mechanize)."""
 
 if __name__ == '__main__':
     main()
