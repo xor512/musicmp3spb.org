@@ -12,6 +12,7 @@ import urllib2
 import sys
 import os
 import shutil
+import sys
 from urlparse import urlparse
 
 MAX_DOWNLOAD_ATTEMPTS = 5
@@ -38,6 +39,16 @@ def print_usage():
 def print_error(msg):
     color_red_bold_esc_seq = "\033[1;31m"
     color_clear_esc_seq = "\033[0;39m"
+
+    # This check is taken from Python 3 port https://github.com/damsgithub/musicmp3spb-3.py
+    if sys.platform.startswith('win'):
+        # Check if color is supported in cmd.exe
+        if sys.getwindowsversion()[0] >= 10 and sys.getwindowsversion()[2] >= 10586:
+            os.system('') # enables VT100 Escape Sequence for WINDOWS 10 Ver. 1607
+        else:
+            color_red_bold_esc_seq = ""
+            color_clear_esc_seq = ""
+
     print >> sys.stderr, '{}{}{}'.format(
         color_red_bold_esc_seq,
         msg,
