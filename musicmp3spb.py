@@ -45,7 +45,7 @@ def print_help():
           "$ {} -a[--all] http://musicmp3spb.org/artist/textures.html\n"
           "to download all albums from the band's page.\n\n"
           "You need Python2 (since mechanize is not available for Pyton3)\n"
-          "and mechanize (https://pypi.python.org/pypi/mechanize).".format("musicmp3spb", "musicmp3spb"))
+          "and mechanize (https://pypi.python.org/pypi/mechanize).".format(script_name, script_name))
 
 def print_usage():
     script_name = os.path.basename(sys.argv[0])
