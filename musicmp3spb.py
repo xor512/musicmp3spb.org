@@ -36,15 +36,16 @@ failed_album_urls = []
 song_found = False
 
 def print_help():
+    script_name = os.path.basename(sys.argv[0])
     print("Python script to automatically download albums from http://musicmp3spb.org site.\n\n"
           "Usage:\n\n"
-          "$ musicmp3spb.py http://musicmp3spb.org/album/dualism.html\n"
+          "$ {} http://musicmp3spb.org/album/dualism.html\n"
           "to download all songs from the album's page\n\n"
           "or\n"
-          "$ musicmp3spb.py -a[--all] http://musicmp3spb.org/artist/textures.html\n"
+          "$ {} -a[--all] http://musicmp3spb.org/artist/textures.html\n"
           "to download all albums from the band's page.\n\n"
           "You need Python2 (since mechanize is not available for Pyton3)\n"
-          "and mechanize (https://pypi.python.org/pypi/mechanize).")
+          "and mechanize (https://pypi.python.org/pypi/mechanize).".format("musicmp3spb", "musicmp3spb"))
 
 def print_usage():
     script_name = os.path.basename(sys.argv[0])
