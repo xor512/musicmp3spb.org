@@ -39,13 +39,13 @@ def print_help():
     script_name = os.path.basename(sys.argv[0])
     print("Python script to automatically download albums from http://musicmp3spb.org site.\n\n"
           "Usage:\n\n"
-          "$ {} http://musicmp3spb.org/album/dualism.html\n"
+          "$ {0} http://musicmp3spb.org/album/dualism.html\n"
           "to download all songs from the album's page\n\n"
           "or\n"
-          "$ {} -a[--all] http://musicmp3spb.org/artist/textures.html\n"
+          "$ {0} -a[--all] http://musicmp3spb.org/artist/textures.html\n"
           "to download all albums from the band's page.\n\n"
           "You need Python2 (since mechanize is not available for Pyton3)\n"
-          "and mechanize (https://pypi.python.org/pypi/mechanize).".format(script_name, script_name))
+          "and mechanize (https://pypi.python.org/pypi/mechanize).".format(script_name))
 
 def print_usage():
     script_name = os.path.basename(sys.argv[0])
