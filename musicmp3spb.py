@@ -86,14 +86,8 @@ def to_utf8(s):
         return s.decode('cp1251').encode('utf8')
 
 def to_safe_filename(a_path):
-    def fixup(c):
-        keepcharacters = (' ', ',', '.', '\'', '_', '-', '!', '(', ')', '[', ']')
-        if c.isalnum() or c in keepcharacters:
-            return c
-        else:
-            return '_'
-    fix_path = "".join(fixup(c) for c in a_path).strip()
-    return fix_path
+    windows_illegal = [ '<', '>', ':', '"', '/', '\\', '|', '?', '*' ]
+    return "".join(filter(lambda c: c not in windows_illegal, list(a_path)))
 
 def download_file(url, filename):
     u = urllib2.urlopen(url)
