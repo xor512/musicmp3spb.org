@@ -137,7 +137,7 @@ def mkdir_and_chdir(new_dir):
         os.makedirs(new_dir)
     os.chdir(new_dir)
 
-def download_song(url, filename_ref):
+def download_song(url):
     browser = browser_open(url)
 
     action_regex = re.compile('/file/.*')
@@ -146,8 +146,6 @@ def download_song(url, filename_ref):
     for link in browser.links(url_regex=action_regex):
         filename = to_utf8(link.text)
         break
-
-    filename_ref['val'] = filename
 
     formcount=0
     for form in browser.forms():
@@ -164,6 +162,8 @@ def download_song(url, filename_ref):
         download_file(to_absolute_url(to_utf8(link.url), browser), filename)
         break
 
+    return filename
+
 def download_album(url):
     browser = browser_open(url)
 
@@ -178,16 +178,15 @@ def download_album(url):
                 if title_regex.match(to_utf8(attr[1])):
                     attempts = MAX_DOWNLOAD_ATTEMPTS
                     while attempts > 0:
-                        filename_ref = { 'val': str() }
+                        filename = None
                         try:
                             song_url = to_absolute_url(to_utf8(link.url), browser)
-                            download_song(song_url, filename_ref)
+                            filename = download_song(song_url)
                             break
                         except Exception as e:
                             attempts -= 1
                             print_error('\nFailure, attempts left: %d, song: %s\n\t%s!' % \
                                 (attempts, song_url, e))
-                            filename = filename_ref['val']
                             if filename and os.path.exists(filename):
                                 os.remove(filename)
                             # Rethrow exception to the upper level so it can cleanup
