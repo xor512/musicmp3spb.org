@@ -2,6 +2,12 @@
 
 Python script to automatically download albums from http://musicmp3spb.org site
 
+## musicmp3spb.org site is down
+
+As it is down (for now? forever?) you may try similar grabbers from [damsgithub github page](https://github.com/damsgithub/).
+There are grabbers for several other similar resources (haven't tried them yet though).
+Kudos to [damsgithub](https://github.com/damsgithub/).
+
 ## Usage
 
 #### Download all songs from the album's page:
